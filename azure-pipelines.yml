@@ -4,38 +4,32 @@ trigger:
 pool:
   vmImage: 'ubuntu 20.04'
 
-jobs:
-- job: InstallPython
-  displayName: 'Install Python 3.12'
-  pool:
-    vmImage: 'ubuntu 20.04'
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.12'
+    addToPath: true
 
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.12'
-      addToPath: true
+- script: |
+    # Additional scripts or commands to run after installing Python 3.12
+    echo "Python 3.12 installed successfully"
+  displayName: 'Post-installation steps'
 
-  - script: |
-      # Additional scripts or commands to run after installing Python 3.12
-      echo "Python 3.12 installed successfully"
-    displayName: 'Post-installation steps'
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  - task: CopyFiles@2
-    inputs:
-      sourceFolder: '$(Build.SourcesDirectory)'
-      contents: '**'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+    publishLocation: 'Container'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: 'drop'
-      publishLocation: 'Container'
-
-  - task: SSH@0
-    inputs:
-      sshEndpoint: 'FirstProjectServiceConnection'
-      runOptions: 'inline'
-      inline: 'sudo apt-get update && sudo apt-get install -y python3.12'
-    displayName: 'Install Python on Ubuntu'
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'FirstProjectServiceConnection'
+    runOptions: 'inline'
+    inline: 'sudo apt-get update && sudo apt-get install -y python3.12'
+  displayName: 'Install Python on Ubuntu'
