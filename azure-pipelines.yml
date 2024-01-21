@@ -1,35 +1,51 @@
+# trigger:
+# - main
+
+# pool:
+#   vmImage: 'ubuntu 20.04'
+
+# steps:
+# - task: UsePythonVersion@1
+#   inputs:
+#     versionSpec: '3.12'
+#     addToPath: true
+
+# - script: |
+#     # Additional scripts or commands to run after installing Python 3.12
+#     echo "Python 3.12 installed successfully"
+#   displayName: 'Post-installation steps'
+
+# - task: CopyFiles@3
+#   inputs:
+#     sourceFolder: '$(Build.SourcesDirectory)'
+#     contents: '**'
+#     targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+# - task: PublishBuildArtifacts@2
+#   inputs:
+#     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     artifactName: 'drop'
+#     publishLocation: 'Container'
+
+# - task: SSH@0
+#   inputs:
+#     sshEndpoint: 'FirstProjectServiceConnection'
+#     runOptions: 'inline'
+#     inline: 'sudo apt-get update && sudo apt-get install -y python3.12'
+#   displayName: 'Install Python on Ubuntu'
+
 trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu 20.04'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: UsePythonVersion@1
-  inputs:
-    versionSpec: '3.12'
-    addToPath: true
-
-- script: |
-    # Additional scripts or commands to run after installing Python 3.12
-    echo "Python 3.12 installed successfully"
-  displayName: 'Post-installation steps'
-
-- task: CopyFiles@3
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@2
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'drop'
-    publishLocation: 'Container'
-
 - task: SSH@0
   inputs:
-    sshEndpoint: 'FirstProjectServiceConnection'
+    sshEndpoint: 'FirstProjectServiceConnection'  # Replace with the name of your SSH service connection
     runOptions: 'inline'
-    inline: 'sudo apt-get update && sudo apt-get install -y python3.12'
-  displayName: 'Install Python on Ubuntu'
+    inline: |
+      echo "Hello, Azure DevOps!" > /path/to/your/folder/created_file.txt
+  displayName: 'Create .txt file on VM'
+
