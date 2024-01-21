@@ -21,13 +21,13 @@ steps:
     contents: '**'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@3
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'drop'
     publishLocation: 'Container'
 
-- task: SSH@0
+- task: SSH@1
   inputs:
     sshEndpoint: 'FirstProjectServiceConnection'
     runOptions: 'inline'
