@@ -2,13 +2,13 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu 20.04'  # Replace 'your_vm_image' with the appropriate VM image
+  vmImage: 'ubuntu 20.04'
 
 jobs:
 - job: InstallPython
   displayName: 'Install Python 3.12'
   pool:
-    vmImage: 'ubuntu 20.04'  # Repeat the VM image definition for the job level
+    vmImage: 'ubuntu 20.04'
 
   steps:
   - task: UsePythonVersion@0
@@ -35,7 +35,7 @@ jobs:
 
   - task: SSH@0
     inputs:
-      sshEndpoint: 'FirstProjectServiceConnection'  # Replace 'your_ssh_connection' with the name of your SSH service connection
+      sshEndpoint: 'FirstProjectServiceConnection'
       runOptions: 'inline'
       inline: 'sudo apt-get update && sudo apt-get install -y python3.12'
     displayName: 'Install Python on Ubuntu'
