@@ -34,18 +34,5 @@
 #     inline: 'sudo apt-get update && sudo apt-get install -y python3.12'
 #   displayName: 'Install Python on Ubuntu'
 
-trigger:
-- main
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'FirstProjectServiceConnection'  # Replace with the name of your SSH service connection
-    runOptions: 'inline'
-    inline: |
-      echo "Hello, Azure DevOps!" > /path/to/your/folder/created_file.txt
-  displayName: 'Create .txt file on VM'
 
